@@ -1,23 +1,73 @@
 {
   "name": "show-image",
-  "displayName": "show-image",
-  "description": "You can pin an image in you sidebar",
+  "displayName": "Show Image",
+  "description": "Muestra una imagen personalizada en el sidebar de VS Code",
   "version": "0.0.1",
+  "publisher": "show-image",
   "engines": {
     "vscode": "^1.105.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:showImageView"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Show Image",
+      "properties": {
+        "show-image.imagePath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Ruta absoluta de la imagen que se mostrará en el sidebar. Si está vacía, se usa la imagen de ejemplo incluida en la extensión."
+        }
+      }
+    },
     "commands": [
       {
-        "command": "show-image.helloWorld",
-        "title": "Hello World"
+        "command": "show-image.selectImage",
+        "title": "Seleccionar imagen",
+        "icon": "$(file-media)"
+      },
+      {
+        "command": "show-image.refresh",
+        "title": "Actualizar imagen",
+        "icon": "$(refresh)"
       }
-    ]
+    ],
+    "views": {
+      "explorer": [
+        {
+          "type": "webview",
+          "id": "showImageView",
+          "name": "Imagen",
+          "icon": "resources/icon/icon.svg",
+          "contextualTitle": "Imagen"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "show-image.selectImage",
+          "when": "view == showImageView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "show-image.refresh",
+          "when": "view == showImageView",
+          "group": "navigation@2"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "show-image.refresh",
+          "when": "false"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

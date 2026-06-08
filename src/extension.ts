@@ -1,26 +1,183 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as fs from 'fs'
+import * as path from 'path'
+import * as vscode from 'vscode'
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+const VIEW_ID = 'showImageView'
+const CONFIG_SECTION = 'show-image'
+const DEFAULT_IMAGE = path.join('resources', 'img', 'test.jpg')
+
 export function activate(context: vscode.ExtensionContext) {
+	const provider = new ShowImageViewProvider(context.extensionUri)
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "show-image" is now active!');
+	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider(VIEW_ID, provider),
+		vscode.workspace.onDidChangeConfiguration((e) => {
+			if (e.affectsConfiguration(`${CONFIG_SECTION}.imagePath`)) {
+				provider.refresh()
+			}
+		}),
+		vscode.commands.registerCommand('show-image.selectImage', async () => {
+			const selected = await vscode.window.showOpenDialog({
+				canSelectMany: false,
+				openLabel: 'Seleccionar imagen',
+				filters: {
+					Imágenes: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'bmp']
+				}
+			})
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('show-image.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from show-image!');
-	});
+			if (!selected?.[0]) {
+				return
+			}
 
-	context.subscriptions.push(disposable);
+			const config = vscode.workspace.getConfiguration(CONFIG_SECTION)
+			await config.update('imagePath', selected[0].fsPath, vscode.ConfigurationTarget.Global)
+			vscode.window.showInformationMessage('Imagen actualizada en el sidebar')
+		}),
+		vscode.commands.registerCommand('show-image.refresh', () => {
+			provider.refresh()
+		})
+	)
 }
 
-// This method is called when your extension is deactivated
+class ShowImageViewProvider implements vscode.WebviewViewProvider {
+	private _view?: vscode.WebviewView
+
+	constructor(private readonly extensionUri: vscode.Uri) {}
+
+	resolveWebviewView(webviewView: vscode.WebviewView): void {
+		this._view = webviewView
+
+		webviewView.webview.options = {
+			enableScripts: false,
+			localResourceRoots: this.getLocalResourceRoots()
+		}
+
+		webviewView.webview.html = this.getHtml(webviewView.webview)
+	}
+
+	refresh(): void {
+		if (!this._view) {
+			return
+		}
+
+		this._view.webview.options = {
+			...this._view.webview.options,
+			localResourceRoots: this.getLocalResourceRoots()
+		}
+		this._view.webview.html = this.getHtml(this._view.webview)
+	}
+
+	private getLocalResourceRoots(): vscode.Uri[] {
+		const roots = [this.extensionUri]
+		const imagePath = this.getConfiguredImagePath()
+
+		if (imagePath && fs.existsSync(imagePath)) {
+			roots.push(vscode.Uri.file(path.dirname(imagePath)))
+		}
+
+		return roots
+	}
+
+	private getConfiguredImagePath(): string {
+		return vscode.workspace.getConfiguration(CONFIG_SECTION).get<string>('imagePath', '').trim()
+	}
+
+	private resolveImageUri(webview: vscode.Webview): { src?: string, error?: string } {
+		const configuredPath = this.getConfiguredImagePath()
+
+		if (!configuredPath) {
+			const defaultUri = vscode.Uri.joinPath(this.extensionUri, ...DEFAULT_IMAGE.split('/'))
+			return { src: webview.asWebviewUri(defaultUri).toString() }
+		}
+
+		if (!fs.existsSync(configuredPath)) {
+			return { error: `No se encontró la imagen:\n${configuredPath}` }
+		}
+
+		const fileUri = vscode.Uri.file(configuredPath)
+		return { src: webview.asWebviewUri(fileUri).toString() }
+	}
+
+	private getHtml(webview: vscode.Webview): string {
+		const { src, error } = this.resolveImageUri(webview)
+		const nonce = getNonce()
+
+		if (error) {
+			return `<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'nonce-${nonce}';">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style nonce="${nonce}">
+		body {
+			margin: 0;
+			padding: 16px;
+			font-family: var(--vscode-font-family);
+			color: var(--vscode-errorForeground);
+			background: var(--vscode-sideBar-background);
+		}
+		p { margin: 0; white-space: pre-wrap; word-break: break-word; }
+	</style>
+</head>
+<body>
+	<p>${escapeHtml(error)}</p>
+</body>
+</html>`
+		}
+
+		return `<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource}; style-src 'nonce-${nonce}';">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style nonce="${nonce}">
+		* { box-sizing: border-box; }
+		body {
+			margin: 0;
+			padding: 8px;
+			background: var(--vscode-sideBar-background);
+			overflow: auto;
+		}
+		.container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 100%;
+		}
+		img {
+			display: block;
+			max-width: 100%;
+			height: auto;
+			border-radius: 4px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<img src="${src}" alt="Imagen del sidebar" />
+	</div>
+</body>
+</html>`
+	}
+}
+
+function getNonce(): string {
+	const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+	let nonce = ''
+	for (let i = 0; i < 32; i++) {
+		nonce += chars.charAt(Math.floor(Math.random() * chars.length))
+	}
+	return nonce
+}
+
+function escapeHtml(value: string): string {
+	return value
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+}
+
 export function deactivate() {}
