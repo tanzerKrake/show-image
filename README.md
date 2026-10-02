@@ -1,74 +1,41 @@
-# show-image README
+# Show Image
 
-This is the README for your extension "show-image". After writing up a brief description, we recommend including the following sections.
+Show Image es una extensión para Visual Studio Code diseñada para ayudarte a visualizar una magen directamente dentro del editor, sin necesidad de abrirlas con otra aplicación.
 
-## Features
+Es perfecta para mantener una imagen que necesites o te guste ver mientras trabajas.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## ¿Qué hace?
 
-For example if there is an image subfolder under your extension project workspace:
+- Muestra una vista previa de una imagen dentro de VS Code
+- Admite formatos comunes como PNG, JPG, JPEG, GIF, WEBP y más
+- Te permite revisar un archivo visual sin salir del entorno de trabajo
 
-\!\[feature X\]\(images/feature-x.png\)
+## ¿Para quién es útil?
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- Desarrolladores que quieran mantener una imagen visible en el editor de código
 
-## Requirements
+## Cómo usarla
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+1. Instala la extensión en Visual Studio Code
+2. Abre una imagen desde el Explorador de archivos o desde el editor
+3. La vista previa se mostrará automáticamente
+4. Puedes revisar la imagen sin salir de tu proyecto
 
-## Extension Settings
+## Instalación
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+Busca "Show Image" en la sección de extensiones de VS Code.
 
-For example:
+## Requisitos
 
-This extension contributes the following settings:
+- Visual Studio Code
+- Tener la imagen que deseas visualizar
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## Soporte
 
-## Known Issues
+Si tienes dudas, sugerencias o encuentras algún problema, puedes abrir un problema en el repositorio de la extensión o en [https://changelog.md/show-image-vsc](https://changelog.md/show-image-vsc)
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
 
-## Release Notes
+## License
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
-
-https://keepachangelog.com/en/1.1.0/
-https://gitmoji.dev/
+This project is licensed under the MIT License.
+See the [LICENSE](./LICENSE) file for details.
