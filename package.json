@@ -1,6 +1,6 @@
 {
-  "name": "image-sidebar-by-krake-devs",
-  "displayName": "Show Image",
+  "name": "static-image-sidebar",
+  "displayName": "Show image on sidebar",
   "description": "Muestra una imagen personalizada en el sidebar de VS Code",
   "version": "1.0.1",
   "icon": "resources/icon/krake-devs.png",
