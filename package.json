@@ -1,5 +1,5 @@
 {
-  "name": "show-image",
+  "name": "show-image-sidebar",
   "displayName": "Show Image",
   "description": "Muestra una imagen personalizada en el sidebar de VS Code",
   "version": "1.0.1",
