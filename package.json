@@ -17,6 +17,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onStartupFinished",
     "onView:showImageView"
   ],
   "main": "./dist/extension.js",

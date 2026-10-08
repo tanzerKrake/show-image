@@ -6,7 +6,7 @@ const VIEW_ID = 'showImageView'
 const CONFIG_SECTION = 'show-image'
 const DEFAULT_IMAGE = path.join('resources', 'img', 'test.jpg')
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
 	const provider = new ShowImageViewProvider(context.extensionUri)
 
 	context.subscriptions.push(
@@ -37,6 +37,15 @@ export function activate(context: vscode.ExtensionContext) {
 			provider.refresh()
 		})
 	)
+
+	if (!context.globalState.get<boolean>('show-image.initialViewShown', false)) {
+		try {
+			await vscode.commands.executeCommand(`${VIEW_ID}.focus`)
+			await context.globalState.update('show-image.initialViewShown', true)
+		} catch (error) {
+			console.error('No se pudo abrir la vista Imagen automáticamente:', error)
+		}
+	}
 }
 
 class ShowImageViewProvider implements vscode.WebviewViewProvider {
