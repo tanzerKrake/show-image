@@ -22,10 +22,10 @@ Requires **Visual Studio Code 1.105.0 or later**.
 
 1. Search for **Show image on sidebar** by **krake-devs** in the Extensions panel and install it.
 2. The **Imagen** view opens on its first activation with the included default image.
-3. Click **Seleccionar imagen** in the view toolbar to choose an image from your computer. Its path is saved in your user settings.
-4. Click **Actualizar imagen** to reload the image after changing the file.
+3. Click **Select Image** in the view toolbar to choose an image from your computer. Its path is saved in your user settings.
+4. Click **Refresh Image** to reload the image after changing the file.
 
-You can also run **Seleccionar imagen** from the Command Palette or configure `show-image.imagePath` with an absolute file path in Settings. Leave it empty to use the default image.
+You can also run **Select Image** from the Command Palette or configure `show-image.imagePath` with an absolute file path in Settings. Leave it empty to use the default image.
 
 If the configured file cannot be found, the view displays an error. Select an existing image or clear the setting to restore the default image.
 
@@ -57,10 +57,10 @@ Requiere **Visual Studio Code 1.105.0 o posterior**.
 
 1. Busca **Show image on sidebar** de **krake-devs** en el panel de extensiones e instálala.
 2. La vista **Imagen** se abre en su primera activación con la imagen predeterminada incluida.
-3. Haz clic en **Seleccionar imagen** en la barra de herramientas de la vista para elegir una imagen de tu equipo. Su ruta se guarda en la configuración de usuario.
-4. Haz clic en **Actualizar imagen** para recargar la imagen después de modificar el archivo.
+3. Haz clic en **Select Image** en la barra de herramientas de la vista para elegir una imagen de tu equipo. Su ruta se guarda en la configuración de usuario.
+4. Haz clic en **Refresh Image** para recargar la imagen después de modificar el archivo.
 
-También puedes ejecutar **Seleccionar imagen** desde la paleta de comandos o configurar `show-image.imagePath` con una ruta absoluta en Ajustes. Déjala vacía para usar la imagen predeterminada.
+También puedes ejecutar **Select Image** desde la paleta de comandos o configurar `show-image.imagePath` con una ruta absoluta en Ajustes. Déjala vacía para usar la imagen predeterminada.
 
 Si no se encuentra el archivo configurado, la vista muestra un error. Selecciona una imagen existente o borra el ajuste para recuperar la imagen predeterminada.
 

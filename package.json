@@ -1,7 +1,7 @@
 {
   "name": "static-image-sidebar",
   "displayName": "Show image on sidebar",
-  "description": "Muestra una imagen personalizada en el sidebar de VS Code",
+  "description": "Displays a personal photo of you or someone special in the VS Code sidebar to keep you inspired while you work.",
   "version": "1.0.1",
   "icon": "resources/icon/krake-devs.png",
   "publisher": "krake-devs",
@@ -28,19 +28,19 @@
         "show-image.imagePath": {
           "type": "string",
           "default": "",
-          "markdownDescription": "Ruta absoluta de la imagen que se mostrará en el sidebar. Si está vacía, se usa la imagen de ejemplo incluida en la extensión."
+          "markdownDescription": "Absolute path to the image that will be displayed in the sidebar. If empty, the sample image included in the extension is used."
         }
       }
     },
     "commands": [
       {
         "command": "show-image.selectImage",
-        "title": "Seleccionar imagen",
+        "title": "Select Image",
         "icon": "$(file-media)"
       },
       {
         "command": "show-image.refresh",
-        "title": "Actualizar imagen",
+        "title": "Refresh Image",
         "icon": "$(refresh)"
       }
     ],
